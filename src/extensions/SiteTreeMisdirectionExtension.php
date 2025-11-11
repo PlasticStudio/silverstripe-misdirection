@@ -9,7 +9,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\ORM\ValidationResult;
 
 /**
@@ -17,7 +17,7 @@ use SilverStripe\ORM\ValidationResult;
  *	@author Nathan Glasl <nathan@symbiote.com.au>
  */
 
-class SiteTreeMisdirectionExtension extends DataExtension {
+class SiteTreeMisdirectionExtension extends Extension {
 
 	/**
 	 *	This provides link mapping customisation directly from a page.
