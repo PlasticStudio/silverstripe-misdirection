@@ -19,6 +19,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Permission;
 use SilverStripe\View\Requirements;
 use Symbiote\Multisites\Multisites;
+use SilverStripe\Core\Validation\ValidationResult;
 
 /**
  *	Simple and regular expression link redirection definitions.
@@ -271,9 +272,9 @@ class LinkMapping extends DataObject {
 		return $fields;
 	}
 
-	public function validate() {
-
-		$result = parent::validate();
+	public function validate(): ValidationResult
+    {
+        $result = parent::validate();
 
 		// Determine whether a regular expression mapping is possible to match against.
 
