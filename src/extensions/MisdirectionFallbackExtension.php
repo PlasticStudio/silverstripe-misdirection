@@ -31,12 +31,21 @@ class MisdirectionFallbackExtension extends Extension {
 	/**
 	 *	Display the appropriate fallback fields.
 	 */
-
 	public function updateCMSFields(FieldList $fields) {
 
-		if($this->owner instanceof SiteConfig) {
+		// Explicitly remove DB fields to stop them auto-appearing in Main
+		$fields->removeByName([
+			'Fallback',
+			'FallbackLink',
+			'FallbackResponseCode',
+			'VanityMappingID',
+		]);
+
+		if ($this->owner instanceof SiteConfig) {
 			return $this->owner->updateFields($fields);
 		}
+
+		return $fields;
 	}
 
 	public function updateSettingsFields($fields) {
@@ -53,12 +62,14 @@ class MisdirectionFallbackExtension extends Extension {
 		// Update any fields that are displayed when not viewing a page.
 
 		$tab = 'Root.Misdirection';
+		
 		$options = array(
 			'Nearest' => 'Nearest Parent',
 			'This' => 'This Page',
 			'URL' => 'URL'
 		);
-		if($this->owner instanceof SiteConfig) {
+
+		if ($this->owner instanceof SiteConfig) {
 			$tab = 'Root.Pages';
 			unset($options['This']);
 		}
@@ -69,11 +80,13 @@ class MisdirectionFallbackExtension extends Extension {
 			'FallbackHeader',
 			'Fallback'
 		));
+		
 		$fields->addFieldToTab($tab, DropdownField::create(
 			'Fallback',
 			'To',
 			$options
 		)->addExtraClass('fallback')->setHasEmptyDefault(true)->setDescription('This will be used when children result in a <strong>page not found</strong>'));
+		
 		$fields->addFieldToTab($tab, TextField::create(
 			'FallbackLink',
 			'URL'
@@ -82,15 +95,19 @@ class MisdirectionFallbackExtension extends Extension {
 		// Retrieve the response code selection.
 
 		$responses = Config::inst()->get(MisDirectionRequestProcessor::class, 'status_codes');
+		
 		$selection = array();
-		foreach($responses as $code => $description) {
-			if(($code >= 300) && ($code < 400)) {
+
+		foreach ($responses as $code => $description) {
+			if (($code >= 300) && ($code < 400)) {
 				$selection[$code] = "{$code}: {$description}";
 			}
 		}
-		if(!$this->owner->FallbackResponseCode) {
+
+		if (!$this->owner->FallbackResponseCode) {
 			$this->owner->FallbackResponseCode = 303;
 		}
+
 		$fields->addFieldToTab($tab, DropdownField::create(
 			'FallbackResponseCode',
 			'Response Code',
@@ -100,6 +117,8 @@ class MisdirectionFallbackExtension extends Extension {
 		// Allow extension customisation.
 
 		$this->owner->extend('updateMisdirectionFallbackExtensionFields', $fields);
+
+		return $fields;
 	}
 
 }
