@@ -88,8 +88,6 @@ class SiteTreeMisdirectionExtension extends Extension {
 
 	public function onBeforeWrite() {
 
-		parent::onBeforeWrite();
-
 		// Retrieve the vanity mapping URL, where this is only possible using the POST variable.
 
 		$vanityURL = (!Controller::has_curr() || is_null($controller = Controller::curr()) || is_null($URL = $controller->getRequest()->postVar('VanityURL'))) ? $this->owner->VanityMapping()->MappedLink : $URL;
@@ -132,8 +130,6 @@ class SiteTreeMisdirectionExtension extends Extension {
 	 */
 
 	public function onAfterWrite() {
-
-		parent::onAfterWrite();
 
 		// Determine whether the default automated URL handling has been replaced.
 
@@ -182,8 +178,6 @@ class SiteTreeMisdirectionExtension extends Extension {
 	 */
 
 	public function onAfterDelete() {
-
-		parent::onAfterDelete();
 
 		// Determine whether this page has been completely removed.
 
