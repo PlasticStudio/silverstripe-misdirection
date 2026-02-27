@@ -9,7 +9,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\ORM\ValidationResult;
 
 /**
@@ -17,7 +17,7 @@ use SilverStripe\ORM\ValidationResult;
  *	@author Nathan Glasl <nathan@symbiote.com.au>
  */
 
-class SiteTreeMisdirectionExtension extends DataExtension {
+class SiteTreeMisdirectionExtension extends Extension {
 
 	/**
 	 *	This provides link mapping customisation directly from a page.
@@ -50,11 +50,13 @@ class SiteTreeMisdirectionExtension extends DataExtension {
 		$this->owner->extend('updateSiteTreeMisdirectionExtensionSettingsFields', $fields);
 	}
 
-	public function validate(ValidationResult $result) {
+	public function validate(): ValidationResult
+    {
+		$result = parent::validate();
 
 		// Retrieve the vanity mapping URL, where this is only possible using the POST variable.
 
-		$vanityURL = (!Controller::has_curr() || is_null($controller = Controller::curr()) || is_null($URL = $controller->getRequest()->postVar('VanityURL'))) ? $this->owner->VanityMapping()->MappedLink : $URL;
+		$vanityURL = (is_null($controller = Controller::curr()) || is_null($URL = $controller->getRequest()->postVar('VanityURL'))) ? $this->owner->VanityMapping()->MappedLink : $URL;
 		if(!$vanityURL) {
 			return $result;
 		}
@@ -86,11 +88,9 @@ class SiteTreeMisdirectionExtension extends DataExtension {
 
 	public function onBeforeWrite() {
 
-		parent::onBeforeWrite();
-
 		// Retrieve the vanity mapping URL, where this is only possible using the POST variable.
 
-		$vanityURL = (!Controller::has_curr() || is_null($controller = Controller::curr()) || is_null($URL = $controller->getRequest()->postVar('VanityURL'))) ? $this->owner->VanityMapping()->MappedLink : $URL;
+		$vanityURL = (is_null($controller = Controller::curr()) || is_null($URL = $controller->getRequest()->postVar('VanityURL'))) ? $this->owner->VanityMapping()->MappedLink : $URL;
 		$mappingExists = $this->owner->VanityMapping()->exists();
 
 		// Determine whether the vanity mapping URL has been updated.
@@ -130,8 +130,6 @@ class SiteTreeMisdirectionExtension extends DataExtension {
 	 */
 
 	public function onAfterWrite() {
-
-		parent::onAfterWrite();
 
 		// Determine whether the default automated URL handling has been replaced.
 
@@ -180,8 +178,6 @@ class SiteTreeMisdirectionExtension extends DataExtension {
 	 */
 
 	public function onAfterDelete() {
-
-		parent::onAfterDelete();
 
 		// Determine whether this page has been completely removed.
 

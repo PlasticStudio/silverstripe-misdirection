@@ -8,8 +8,8 @@ use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTP;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Model\List\ArrayList;
 use SilverStripe\Core\Convert;
-use SilverStripe\ORM\ArrayList;
 use SilverStripe\SiteConfig\SiteConfig;
 use Symbiote\Multisites\Multisites;
 
@@ -95,7 +95,7 @@ class MisdirectionService {
 
 		// Enforce any hostname restriction that may have been defined.
 
-		if(is_null($host) && Controller::has_curr() && ($controller = Controller::curr())) {
+		if(is_null($host) && ($controller = Controller::curr())) {
 			$host = $controller->getRequest()->getHeader('Host');
 		}
 		$temporary = $host;
