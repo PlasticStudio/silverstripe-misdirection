@@ -10,10 +10,6 @@ _The current release is **3.1.1**_
 
 This module does **not** require the CMS.
 
-** Temporary solution for League/Csv deprecations **
-Restrict version to 9.26 to mitigate issues with 
-League\Csv\Reader::createFromPath() and League\Csv\AbstractCsv::createFromFileObject()
-
 ## Getting Started
 
 * [Place the module under your root project directory.](https://packagist.org/packages/nglasl/silverstripe-misdirection)
