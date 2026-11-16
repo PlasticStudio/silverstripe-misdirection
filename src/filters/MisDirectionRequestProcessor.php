@@ -107,9 +107,10 @@ class MisDirectionRequestProcessor implements HTTPMiddleware
 				}
 
 				// Update the response using the link mapping redirection.
-
-				$response->setBody('');
-				$response->redirect($link, $responseCode);
+				if ($link) {
+					$response->setBody('');
+					$response->redirect($link, $responseCode);
+				}
 			}
 			else if($error && ($fallback = $this->service->determineFallback($requestURL))) {
 
